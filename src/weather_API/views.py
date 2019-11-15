@@ -29,8 +29,8 @@ def erase_by_date(request):
         raise Http404
     sd = request.DELETE.get('start')
     ed = request.DELETE.get('end')
-    lat = float(request.DELETE.get('lat'))
-    lon = float(request.DELETE.get('lon'))
+    lat = float(request.query_params.get('lat'))
+    lon = float(request.query_params.get('lon'))
     sd = datetime.strptime(sd, '%Y-%M-%d').date()
     ed = datetime.strptime(ed, '%Y-%M-%d').date()
     queryset = weather_data.objects.filter(date__range=[sd , ed],location__lat = lat,location__lon = lon)
@@ -48,7 +48,7 @@ class Get_or_Post(APIView):
         # if request.method == 'POST':
         #     return self.create_new_data(request
         if request.method == 'GET':
-            if not request.query_params.get('start') is None:
+            if not request.query_params.get('lat') is None:
                 # return self.get_by_location(request)
                 lat = float(request.GET.get('lat'))
                 lon = float(request.GET.get('lon'))
