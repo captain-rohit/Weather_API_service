@@ -33,6 +33,8 @@ def erase_by_date(request):
     lon = float(request.query_params.get('lon'))
     sd = datetime.strptime(sd, '%Y-%M-%d').date()
     ed = datetime.strptime(ed, '%Y-%M-%d').date()
+    if sd is None or ed is None or lat is None or lon is None:
+        raise Http404
     queryset = weather_data.objects.filter(date__range=[sd , ed],location__lat = lat,location__lon = lon)
     query = get_object_or_404(queryset)
     query.delete()
@@ -48,18 +50,19 @@ class Get_or_Post(APIView):
         # if request.method == 'POST':
         #     return self.create_new_data(request
         if request.method == 'GET':
-            if not request.query_params.get('lat') is None:
+            if request.GET['lat'] is None && request.GET['lon'] is None:
+                qs = weather_data.objects.all.order_by('id')
+                serializer = WeatherDataSerializer(qs, many=True)
+                return Response(serializer.data,status=status.HTTP_200_OK)
                 # return self.get_by_location(request)
+            else:
                 lat = float(request.GET.get('lat'))
                 lon = float(request.GET.get('lon'))
                 qs = weather_data.objects.filter(location__lat=lat, location__lon=lon)
                 qs = get_object_or_404(qs)
                 serializer = WeatherDataSerializer(qs, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                qs = weather_data.objects.all.order_by('id')
-                serializer = WeatherDataSerializer(qs, many=True)
-                return Response(serializer.data,status=status.HTTP_200_OK)
+                
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
