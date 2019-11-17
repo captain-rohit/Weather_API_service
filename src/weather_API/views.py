@@ -50,7 +50,7 @@ class Get_or_Post(APIView):
         # if request.method == 'POST':
         #     return self.create_new_data(request
         if request.method == 'GET':
-            if request.GET['lat'] is None && request.GET['lon'] is None:
+            if request.GET.get('lat') is None and request.GET.get('lon') is None:
                 qs = weather_data.objects.all.order_by('id')
                 serializer = WeatherDataSerializer(qs, many=True)
                 return Response(serializer.data,status=status.HTTP_200_OK)
