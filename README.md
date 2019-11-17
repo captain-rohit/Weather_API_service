@@ -22,7 +22,10 @@ pip3 install -r requirements.txt
          or,
 pip install -r requirements.txt
 
-After all the Installations are complete Create a new Superuser by running the manage.py createsuperuser command.
+After all the Installations are complete Create a new Superuser by running:
+
+cd src/
+manage.py createsuperuser
 
 Enter the required Credentials and now you are done.
 
