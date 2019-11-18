@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from datetime import datetime
-from django.db.models.aggregates import Max,Min
+from rest_framework.decorators import api_view
+# from django.db.models.aggregates import Max,Min
 
 from .models import weather_data,Location
 from.serializers import WeatherDataSerializer
@@ -17,6 +18,7 @@ class WeatherListAPIView(ListCreateAPIView):
     queryset = weather_data.objects.all()
     serializer_class = WeatherDataSerializer
 
+@api_view(['GET', 'DELETE'])    
 def erase_data(request,w_id):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -24,6 +26,7 @@ def erase_data(request,w_id):
     query.delete()
     return Response(status=status.HTTP_200_OK)
 
+@api_view(['GET', 'DELETE'])
 def erase_by_date(request):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
