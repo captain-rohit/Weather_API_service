@@ -34,8 +34,8 @@ def erase_by_date(request):
     ed = request.DELETE.get('end')
     lat = float(request.query_params.get('lat'))
     lon = float(request.query_params.get('lon'))
-    sd = datetime.strptime(sd, '%Y-%M-%d').date()
-    ed = datetime.strptime(ed, '%Y-%M-%d').date()
+    sd = datetime.strptime(sd, '%Y-%m-%d').date()
+    ed = datetime.strptime(ed, '%Y-%m-%d').date()
     if sd is None or ed is None or lat is None or lon is None:
         raise Http404
     queryset = weather_data.objects.filter(date__range=[sd , ed],location__lat = lat,location__lon = lon)
@@ -82,8 +82,8 @@ def get_with_temperature(request):
     if request.method == 'GET':
         sd = request.GET.get('start')
         ed = request.GET.get('end')
-        sd = datetime.strptime(sd, '%Y-%M-%d').date()
-        ed = datetime.strptime(ed, '%Y-%M-%d').date()
+        sd = datetime.strptime(sd, '%Y-%m-%d').date()
+        ed = datetime.strptime(ed, '%Y-%m-%d').date()
         queryset = weather_data.objects.filter(date__range=[sd, ed])
         data = []
         for q in queryset:
